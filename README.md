@@ -1,7 +1,7 @@
 # Soundbrett
 
 Soundbrett is a small soundboard for the commandline written in Ruby. Soundbrett automatically assigns hotkeys to the soundfiles you give to it. The hotkeys can be rebound.
-To install, simply clone the git repository. Soundbrett has a dependency on mpv!
+To install, simply clone the git repository. Soundbrett has a dependency on mpv *or* mplayer!
 
 ## Controls
 
