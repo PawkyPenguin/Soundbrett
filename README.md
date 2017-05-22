@@ -19,7 +19,7 @@ Simply execute soundbrett.rb and pass as an argument the directory your soundfil
 
 These are features I plan to implement in the future (TM).
 
-* Support for persistant hotkeys with the help of configfiles (already somewhat began with it)
+* Support for persistent hotkeys with the help of configfiles (already somewhat began with it)
 * Adjustment of width and height for smaller terminals
 * Use aplay if mpv isn't installed
 * Display "now playing" and "rebind mode" texts.
