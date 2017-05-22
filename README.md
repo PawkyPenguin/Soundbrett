@@ -21,5 +21,4 @@ These are features I plan to implement in the future (TM).
 
 * Support for persistant hotkeys with the help of configfiles (already somewhat began with it)
 * Adjustment of width and height for smaller terminals
-* Use aplay if mpv isn't installed
-* Display "now playing" and "rebind mode" texts.
+* Display "now playing" text

@@ -11,6 +11,7 @@ class Drawer
 	Margin_key = 3
 	Margin_cursor_top = 3
 	Margin_cursor_bot = 3
+	@rebinding_mode
 	@window
 	@filelist
 	@width
@@ -76,11 +77,7 @@ class Drawer
 			# If the cursor has been reset, we need to move the range
 			@display_range += -1
 		end
-
-		draw_files
-		draw_bindings
-		# highlight new file
-		highlight_file(@keybinder.filelist[cur_new])
+		do_drawing(cur_new)
 	end
 	
 	def cursor_down(cur_old, cur_new)
@@ -98,11 +95,29 @@ class Drawer
 			# If the cursor has been reset, we need to move the range
 			@display_range += 1
 		end
+		do_drawing(cur_new)
+	end
 
+	def do_drawing(highlight_pos)
 		draw_files
 		draw_bindings
-		# highlight new file
-		highlight_file(@keybinder.filelist[cur_new])
+		if (@rebind_mode)
+			highlight_binding(@keybinder.bindings[@keybinder.filelist[highlight_pos]])
+		else
+			highlight_file(@keybinder.filelist[highlight_pos])
+		end
+	end
+
+	def highlight_binding(binding_name)
+		@window.setpos(Margin_top + @virtual_cursor, cursor_pos_keybindings)
+		@window.attrset(A_REVERSE)
+		@window.addstr(binding_name)
+		@window.attrset(A_NORMAL)
+	end
+	
+	def unhighlight_binding(binding_name)
+		@window.setpos(Margin_top + @virtual_cursor, cursor_pos_keybindings)
+		@window.addstr(binding_name)
 	end
 
 	def highlight_file(filename)
@@ -113,7 +128,6 @@ class Drawer
 	end
 
 	def unhighlight_file(filename)
-		# remove highlight of previously highlighted file
 		@window.setpos(Margin_top + @virtual_cursor, cursor_pos_files)
 		@window.addstr(filename)
 	end
@@ -165,6 +179,7 @@ class Drawer
 			end
 			@window.setpos(@window.cury() + 1, cursor_pos_keybindings)
 		end
+
 	end
 
 	def filelist_height
@@ -173,6 +188,23 @@ class Drawer
 
 	def filelist_width
 		return @width - Margin_left - Margin_key - Margin_right
+	end
+
+	def update_rebind_mode(rebind_mode, cursor_pos)
+		@rebind_mode = rebind_mode
+		if (@rebind_mode)
+			unhighlight_file(@keybinder.filelist[cursor_pos])
+			highlight_binding(@keybinder.bindings[@keybinder.filelist[cursor_pos]])
+		else
+			highlight_file(@keybinder.filelist[cursor_pos])
+			unhighlight_binding(@keybinder.bindings[@keybinder.filelist[cursor_pos]])
+		end
+
+	end
+
+	def debug(text)
+		@window.setpos(0,0)
+		@window.addstr(text)
 	end
 end
 

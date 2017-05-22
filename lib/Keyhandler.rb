@@ -20,14 +20,17 @@ class Keyhandler
 			cursor_down
 		when KEY_DC
 			@rebind_mode = !@rebind_mode
+			@drawer.update_rebind_mode(@rebind_mode, @cursor_pos)
 		when KEY_RIGHT
 			play_file @keybinder.bindings[@keybinder.filelist[@cursor_pos]]
 		when KEY_LEFT
 			exit 0
 		when /[[:ascii:]]/
 			if @rebind_mode
-				new_binding shortcut
-				@rebind_mode = false
+				if (new_binding(shortcut))
+					@rebind_mode = false
+					@drawer.update_rebind_mode(@rebind_mode, @cursor_pos)
+				end
 			else
 				play_file shortcut
 			end
@@ -49,10 +52,11 @@ class Keyhandler
 
 	def new_binding(shortcut)
 		if @keybinder.bindings.has_value? shortcut
-			return
+			return false
 		end
 		@keybinder.new_binding(shortcut, @cursor_pos)
 		@drawer.new_binding(shortcut, @cursor_pos)
+		return true
 	end
 
 	def play_file(shortcut)
@@ -60,6 +64,23 @@ class Keyhandler
 			return
 		end
 		filepath = @keybinder.path + @keybinder.bindings.key(shortcut)
-		system("mpv --really-quiet #{filepath}")
+		if has_mpv
+			system("mpv --really-quiet #{filepath}")
+		elsif has_mplayer
+			system("mplayer #{filepath} > /dev/null 2&>1")
+		end
 	end
+
+	def has_mplayer
+		system("mplayer -v > /dev/null")
+		return "#{$?}".end_with? ' 0'
+	end
+
+	def has_mpv
+		system("mpv -v > /dev/null")
+		return "#{$?}".end_with? ' 0'
+	end
+
+
+		
 end

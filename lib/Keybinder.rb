@@ -13,7 +13,7 @@ class Keybinder
 
 	def initialize(path)
 		@path = path + '/'
-		@filelist = Dir.glob("#{File.expand_path path}/*.mp3").map { |x| File.basename x }
+		@filelist = Dir.glob("#{File.expand_path path}/*").map { |x| File.basename x }
 		@configpath = get_config_path path
 		@bindings = {}
 
@@ -37,7 +37,6 @@ class Keybinder
 				new_binding(new_key,i) unless !new_key
 			end
 		end
-		puts bindings
 	
 	end
 
