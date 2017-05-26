@@ -24,7 +24,7 @@ class Keyhandler
 		when KEY_RIGHT
 			play_file @keybinder.bindings[@keybinder.filelist[@cursor_pos]]
 		when KEY_LEFT
-			exit 0
+			Process.exit
 		when /[[:ascii:]]/
 			if @rebind_mode
 				if (new_binding(shortcut))
