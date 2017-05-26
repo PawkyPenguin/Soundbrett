@@ -3,6 +3,12 @@
 Soundbrett is a small soundboard for the commandline written in Ruby. Soundbrett automatically assigns hotkeys to the soundfiles you give to it. The hotkeys can be rebound.
 To install, simply clone the git repository. Soundbrett has a dependency on mpv *or* mplayer!
 
+## Dependencies
+
+- ruby
+- [ruby-curses](https://github.com/ruby/curses)
+- mpv or mplayer
+
 ## Controls
 
 To close Soundbrett, press the right arrow key. To play a soundfile, either press the right arrow key, which plays the selected file, or press the associated hotkey.
